@@ -1,0 +1,35 @@
+<p>{{ 'hello ' + user.profile.username}}</p>
+
+Folowing: <br />
+<div>
+    <ul class="unstyled">
+        <li ng-repeat="following in followings">
+            <input  type="checkbox" ng-model="following.enabled">
+            <span class="show-{{following.enabled}}">{{following.name}}</span>
+        </li>
+    </ul>
+
+</div>
+<br><br>{{followings}}
+<br><br>{{polylines}}
+<li ng-repeat="p in map.polylines">{{p.path}}</li>
+
+<br><br>
+Embeded version:<br>
+
+
+
+<ui-gmap-google-map center="map.center" zoom="map.zoom" events="map.events">
+    <ui-gmap-polyline ng-if="map.polylines.length > 1" ng-repeat="p in map.polylines" path="p.path"
+                      static="false" stroke="p.stroke" visible="p.visible" clickable="false"
+                      geodesic="false" fit="false" editable="false" draggable="false"></ui-gmap-polyline>
+
+
+</ui-gmap-google-map>
+
+{{map | json }}
+
+</ul>
+
+
+

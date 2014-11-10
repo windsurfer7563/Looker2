@@ -1,0 +1,36 @@
+{
+   "devices":
+	{
+	  "12345" : {
+		"iphone" : {
+		  "title" : "iphone"
+		},
+		"nokia" : {
+		  "title" : "nokia"
+		}
+	  },
+	  "123456" : {
+		"iphone" : {
+		  "title" : "iphone2"
+		},
+		"nokia" : {
+		  "title" : "nokia2"
+		},
+		"ipad" : {
+		  "title" : "ipad"
+		}
+	  }
+	},
+
+   "users":
+	{
+	  "12345" : {
+		  "name" : "igor",
+		  "email" : "igor@uawindsurfing.com.ua"
+		},
+		"123456" : {
+		  "name" : "igor2",
+		  "email" : "igor2@uawindsurfing.com.ua"
+		}
+	}
+}
