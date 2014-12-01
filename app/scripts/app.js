@@ -21,6 +21,7 @@ var app = angular
     'google-maps'.ns()
   ])
   .constant('FIREBASE_URL','https://torid-heat-157.firebaseio.com/')
+  .constant('COLORS',['#6060FB','#FB6060','#60FB60'])
   .config(['$routeProvider', 'GoogleMapApiProvider'.ns(), function ($routeProvider,GoogleMapApi) {
    GoogleMapApi.configure({
             //    key: 'your api key',
@@ -50,6 +51,17 @@ var app = angular
                 }
             }
         })
+       .when('/addfollow', {
+           templateUrl: 'views/addusertofollow.html',
+           controller: 'AddFollowCtrl',
+           resolve: {
+               user: function(Auth) {
+                   return Auth.resolveUser();
+               }
+           }
+       })
+
+
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'

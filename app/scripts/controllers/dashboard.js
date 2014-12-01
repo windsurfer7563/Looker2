@@ -3,26 +3,74 @@
  */
 'use strict';
 
-app.controller('DashboardCtrl',['$scope', '$location','User','Auth','Following', 'GoogleMapApi'.ns(), 'Tracks', function ($scope,$location,User,Auth,Following,GoogleMapApi,Tracks) {
+app.controller('DashboardCtrl',['$scope', '$location','Auth','Following', 'GoogleMapApi'.ns(), 'Tracks','COLORS', function ($scope,$location,Auth,Following,GoogleMapApi,Tracks,COLORS) {
+    var uidArray=[];
+     $scope.followings=[];
      $scope.signedIn = Auth.signedIn;
      $scope.user=Auth.user;
-
-
-     Auth.resolveUser().then(function(usr){
-         $scope.followings=Following.get(usr.uid);
-     });
+     $scope.path_visible = true;
 
 
 
+    $scope.markers=Tracks.markers;
 
+    Auth.resolveUser().then(function (usr) {
+                 if (usr!=null){
+                 $scope.followings = Following.get(usr.uid);
+                 $scope.followings.$loaded().then(function () {
+                    //console.log(Auth.user.profile.username);
+                     //додаємо самого себе до списку слідуваних
+                     $scope.followings.push({$id:$scope.user.profile.$id,enabled:true,name:"my device"});
+                 //    console.log($scope.followings);
+                     AssignColors();
+                     Tracks.initialize(followIds()).then(function (data) {
+                         $scope.map.polylines = data;
+                         $scope.map.bounds = Tracks.markers;
+                         //   $scope.markers=Tracks.markers;
+                     });
 
+                 });
+             }
+        }
+    );
 
+    $scope.changeEnabled = function(enabled){
+    //   console.log('enabled: ',enabled);
 
+        if (enabled.enabled===false){
+            Tracks.destroy(enabled.$id);
+        }
+        else
+        {
+           uidArray[0]={id: enabled.$id,color: enabled.color};
+            Tracks.initialize(uidArray).then(function(data) {
+            $scope.map.polylines = data;
+            });
+
+        }
+
+    };
+
+    function AssignColors(){
+        var c=0;
+        $scope.followings.forEach(function (fl){
+            fl.color=COLORS[c];c++;
+            });
+    }
+
+    function followIds(){
+         var data = [];
+         $scope.followings.forEach(function (fl) {
+              //  console.log(fl);
+                 if (fl.enabled === true) {
+                     data.push({id:fl.$id, color:fl.color});
+                 }
+            });
+      //  console.log(data);
+        return data;
+     }
 
     GoogleMapApi.then(function() {
-       // $scope.polylines=[]
-      //  $scope.polylines.push(Tracks.get('simplelogin:6'));
-        Tracks.initialize(['simplelogin:6']);
 
         $scope.map = {
             control: {},
@@ -37,44 +85,28 @@ app.controller('DashboardCtrl',['$scope', '$location','User','Auth','Following',
                 longitude: -99.66
             },
             zoom: 4,
-            polylines: Tracks.all,
+            polylines: [],
             events: {
                 tilesloaded: function (map) {
-                        console.log('this is the map instance', map);
-                        $scope.$apply();
-                    },
-                zoom_changed: function (map) {
-                    console.log('this is the zoom', map);
-                   }
-                }
+               // console.log('this is the map instance', map);
+                }}
             };
 
-        $scope.map.polylines.push(
-            {
-                id: 3,
-                path: [{latitude:40,longitude:-74},{latitude:30,longitude:-89},{latitude:31,longitude:-122}],
-                stroke: {
-                    color: '#FB6060',
-                    weight: 3
-                },
+        $scope.map.marker={options:{
+                 dragable:false,
+                 //animation:google.maps.Animation.BOUNCE
+                }
+        };
 
-            });
 
-         //console.log($scope.map);
-        //$scope.$apply();
-    });
-
-    $scope.$watch('polylines', function(){
-        console.log('polylines changed');
-
-    });
-    $scope.$watch('followings', function(){
-        console.log('folowings changed');
 
     });
 
-
-
+/*
+    $scope.followings.$on('change', function() {
+        console.log('followings changed');
+    });
+*/
 
 }]);
 

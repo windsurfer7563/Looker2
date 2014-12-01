@@ -26,21 +26,11 @@
         <div ng-controller="NavCtrl">
           <ul class="nav nav-pills pull-right">
           <li class="active"><a ng-href="#">Home</a></li>
-          <li><a ng-href="#/about">About</a></li>
-          <li><a ng-href="#">Contact</a></li>
-          <li ng-show="signedIn()">
-             <p class="navbar-text">{{ user.profile.username }}</p>
-          </li>
-          <li ng-show="signedIn()">
-          <a ng-href="#/users/{{ user.uid }}">
-                <img ng-src="http://www.gravatar.com/avatar/{{ user.profile.md5_hash }}" class="nav-pic" />
-                     {{ currentUser.username }}
-                 </a>
-          </li>
-          <li ng-hide="signedIn()"><a href="#/login">Login</a></li>
+          <li ng-show="signedIn()"><a ng-href="#">{{user.profile.username}}</a></li>
+          <li ng-show="signedIn()"><a ng-href="#/addfollow">Follow</a></li>
+          <li ng-hide="signedIn()"><a ng-href="#/login">Login</a></li>
           <li ng-show="signedIn()"><a ng-href="#" ng-click="logout()">Logout</a></li>
-          <li ng-hide="signedIn()"><a href="#/register">Register</a></li>
-
+          <li ng-hide="signedIn()"><a ng-href="#/register">Register</a></li>
         </ul>
         </div>
         <h3 class="text-muted">looker2</h3>
@@ -50,7 +40,7 @@
       <div ng-view=""></div>
 
       <div class="footer">
-        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
+
       </div>
     </div>
 
@@ -100,6 +90,7 @@
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/auth.js"></script>
         <script src="scripts/controllers/nav.js"></script>
+        <script src="scripts/controllers/addfollow.js"></script>
         <script src="scripts/services/auth.js"></script>
         <script src="scripts/services/tracks.js"></script>
         <script src="scripts/services/user.js"></script>

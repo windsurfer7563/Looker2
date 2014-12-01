@@ -1,33 +1,42 @@
-<p>{{ 'hello ' + user.profile.username}}</p>
-
-Folowing: <br />
+{{user.profile.username}}
+<div ng-show="signedIn()">following: <br /></div>
 <div>
     <ul class="unstyled">
         <li ng-repeat="following in followings">
-            <input  type="checkbox" ng-model="following.enabled">
-            <span class="show-{{following.enabled}}">{{following.name}}</span>
+            <input  type="checkbox" ng-model="following.enabled" ng-change="changeEnabled(following)">
+            <span class="show-{{following.enabled}}")>{{following.name}}</span>
         </li>
     </ul>
-
 </div>
-<br><br>{{followings}}
-<br><br>{{polylines}}
-<li ng-repeat="p in map.polylines">{{p.path}}</li>
 
+<div ng-show="signedIn()" >
+    <input type="checkbox" ng-model="path_visible"> visible Path
+</div>
+<!--
+<br><br>{{followings}}<br><br>
+
+<br><br>map.polylines:  {{map.polylines}}
 <br><br>
-Embeded version:<br>
 
+<!--<li ng-repeat="p in map.polylines">{{p.path}}</li>-->
+<!--
+<br><br>
 
+Markers:<br>
+{{markers}}
+-->
+<br><br>
 
 <ui-gmap-google-map center="map.center" zoom="map.zoom" events="map.events">
-    <ui-gmap-polyline ng-if="map.polylines.length > 1" ng-repeat="p in map.polylines" path="p.path"
-                      static="false" stroke="p.stroke" visible="p.visible" clickable="false"
-                      geodesic="false" fit="false" editable="false" draggable="false"></ui-gmap-polyline>
+    <ui-gmap-polyline ng-repeat="p in map.polylines" path="p.path"
+                      static="false" stroke="p.stroke" visible="path_visible" clickable="false"
+                      geodesic="false" editable="false" draggable="false"></ui-gmap-polyline>
 
+    <ui-gmap-marker ng-repeat="m in markers" fit="true" coords="m.coords" options="map.marker.options" icon="m.icon" events="" idkey="m.id">
+    </ui-gmap-marker>
 
 </ui-gmap-google-map>
 
-{{map | json }}
 
 </ul>
 

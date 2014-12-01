@@ -1,0 +1,12 @@
+<div class="auth-forms">
+
+    <h2>Add people to follow</h2>
+
+    <form ng-submit="addfollow()">
+        <p ng-show="error" class="text-danger">{{ error }}</p>
+        <input type="text" ng-model="follow.id" placeholder="User ID" class="form-control"><br>
+        <input type="text" ng-model="follow.password" placeholder="Password from device" class="form-control"><br>
+        <input type="submit" value="Follow" class="btn btn-primary" />
+    </form>
+
+</div>

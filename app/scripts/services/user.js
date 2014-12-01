@@ -9,7 +9,7 @@ app.factory('User', function ($firebase, FIREBASE_URL) {
 
     var User={
         get: function(userId){
-            return $firebase(ref.child('users').child(userId)).$asObject();
+            return $firebase(ref.child('profile').child(userId)).$asObject();
         }
     };
     return User;

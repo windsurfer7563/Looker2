@@ -18,7 +18,7 @@ app.factory('Auth', function ($firebaseSimpleLogin,$firebase, FIREBASE_URL, $roo
             };
         //    console.log(user);
             var profileRef = $firebase(ref.child('profile'));
-            return profileRef.$set(user.uid, profile);
+            return profileRef.$set(user.id, profile);
         },
         login: function (user) {
             return auth.$login('password', user);
@@ -32,18 +32,28 @@ app.factory('Auth', function ($firebaseSimpleLogin,$firebase, FIREBASE_URL, $roo
         signedIn: function() {
             return !!Auth.user.provider;
         },
+        followRegister: function (user,follow) {
+            var profileRef = $firebase(ref.child('profile').child(user.uid).child('following'));
+            var follow_profile = {
+                name: follow.name,
+                enabled: true
+                    };
+            return profileRef.$set(follow.id,follow_profile);
+        },
+
         user: {}
     };
 
     $rootScope.$on('$firebaseSimpleLogin:login', function(e, user) {
         console.log('logged in');
         angular.copy(user, Auth.user);
-        Auth.user.profile = $firebase(ref.child('profile').child(Auth.user.uid)).$asObject();
+        Auth.user.profile = $firebase(ref.child('profile').child(Auth.user.id)).$asObject();
         });
     $rootScope.$on('$firebaseSimpleLogin:logout', function() {
         console.log('logged out');
         if(Auth.user && Auth.user.profile) {
             Auth.user.profile.$destroy();
+
         }
         angular.copy({}, Auth.user);
     });
